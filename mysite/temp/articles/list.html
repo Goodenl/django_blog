@@ -1,17 +1,56 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Последнии статьи{% endblock %}
 
+{% block head %}
+	<link rel="stylesheet" href="{% static 'articles/css/list.css' %}">
+{% endblock %}
+
 {% block content %}
+	{% if articles_list %}
+		<div class="container mt-3">
+			<div id="list-box">
+				<ul class="list-group">
+				{% for a in articles_list %}
+					<li id="list-item" class="list-group-item mt-3 p-2">
+						<div class="row">
 
-	{% if latest_articles_list %}
+							<div id="user-box" class="ml-4 mt-2 col-md-1">
+								<a href="#" class="">
+									<div id="user-img" class="rounded-circle bg-dark">
+										<img src="favicon.svg" alt="User_Avatar" id="user-img" width="40px">
+									</div>
+									<p id="user-name" class="text-center text-truncate" >{{a.article_author}}</p>
+								</a>
+							</div>
 
-		{% for a in latest_articles_list %}
-			<a href="{% url 'articles:detail' a.id %}">{{a.article_title}}</a>
-		{% endfor %}
+							<div id="rating-box" class="col-md-1">
+								<div class="mx-auto float-right rounded" style="background-color: rgba(139,195,74 ,calc(({{a.article_rating}}/{{max_rating}}) + 0.5));"></div>
+							</div>
 
+							<div id="right-box" class="col-md-10 row" >
+								<div id="article-box" class=" col-md-11 rounded text-dark">
+									<a href="{% url 'articles:detail' a.id %}"><h4 id="article-header-text" class="m-2 text-center" >{{a.article_title}}</h4></a>
+									<p id="article-text">{{a.article_text|truncatechars:150}}</p>
+								</div>
+
+								<div id="interact-box" class="m-auto">
+									<div id="detail-article-btn" class="bg-dark rounded-circle text-center">
+										<a id="article-btn" href="{% url 'articles:detail' a.id %}"><img class="rounded" src="{% static '/core/icon/eye.svg' %}" alt="See_Article" width="30px"></a>
+									</div>
+									<div id="download-article-btn" class="bg-dark rounded-circle text-center">
+										<a id="article-btn" href="#"><img class="rounded" src="{% static '/core/icon/download-article.svg' %}" alt="Download_Article" width="25px"></a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</li>
+				{% endfor %}
+				</ul>
+			</div>
+		</div>
 	{% else %}
 		<p>Статьи не найдены )</p>
 	{% endif %}
-
 {% endblock %}

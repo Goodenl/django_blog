@@ -1,28 +1,126 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}{{article.article_title}}{% endblock %}
 
+{% block head %}
+	<link rel="stylesheet" href="{% static 'articles/css/detail.css' %}">
+	<script src="{% static 'articles/js/hover_space.js' %}"></script>
+{% endblock %}
+
 {% block content %}
+	{% if request.user.username == article.article_author %}
 
-	<h1>{{article.article_title}}</h1>
-
-	{% if article.was_published_recently %}
-		<em>НОВАЯ СТАТЬЯ</em><br>
+		<form id="delete_form" action="{% url 'articles:delete_article' article.id %}" method="POST">
+			{% csrf_token %}
+		</form>
+		<a href="javascript:void()" onclick="delete_question()">Удалить</a>
+		<script>
+			function delete_question(){
+				if (confirm("Вы уверены?")){
+					$("#delete_form").submit();
+				}
+			}
+		</script>
 	{% endif %}
 
-	<a href="#">{{article.article_author}}</a>
-	<em>{{article.pub_date}}</em>
-	<p>{{article.article_text}}</p>
+	<div class="container-fluid">
 
-	<hr>
+	<div id="main-box" class="row">
+		<div id="left-sidebar" class="col-md-2 mr-2 position-absolute">
+			<ul class="list-group">
+				<li class="list-group-item m-1">
+					<a href="#"><h6>Название статьи</h6></a>
+					<p>Текст очень интересной статьи</p>
+				</li>
+				<li class="list-group-item m-1">
+					<a href="#"><h6>Название статьи</h6></a>
+					<p>Текст очень интересной статьи</p>
+				</li>
+				<li class="list-group-item m-1">
+					<a href="#"><h6>Название статьи</h6></a>
+					<p>Текст очень интересной статьи</p>
+				</li>
+				<li class="list-group-item m-1">
+					<a href="#"><h6>Название статьи</h6></a>
+					<p>Текст очень интересной статьи</p>
+				</li>
+				<li class="list-group-item m-1">
+					<a href="#"><h6>Название статьи</h6></a>
+					<p>Текст очень интересной статьи</p>
+				</li>
+			</ul>
+		</div>
+
+		<div id="content" class="offset-md-2 mt-4 p-2 col-md-8 bg-light row rounded">
+			<div id="header-article" class="row col-md-12 m-3 text-right align-middle">
+
+				<div id="return-btn" class="col-md-1 row text-center">
+					<a class="bg-dark rounded-circle m-auto" href="{% url 'articles:articles' %}"><img class=" mt-2 mr-1" src="{% static 'core/icon/back-white-rounded.svg' %}" alt="" width="60%"></a>
+				</div>
+
+				<div id="title-article" class="col-md-7">
+					<h1>{{article.article_title}}</h1>
+					<!-- {% if article.was_published_recently %}
+						<em>НОВАЯ СТАТЬЯ</em><br>
+					{% endif %}
+					<a href="#">{{article.article_author}}</a>
+					<em>{{article.pub_date}}</em>
+					<p>{{article.article_text}}</p> -->
+				</div>
+
+				<div id="article-btn" class="offset-md-1 col-md-3 row text-center ">
+					{% if request.user.username == article.article_author %}
+						<a class="bg-dark rounded-circle m-auto" href="{% url 'articles:update_article' article.id %}"><img class="mt-2" src="{% static 'core/icon/edit.svg' %}" alt="" width="70%"></a>
+					{% endif %}
+					
+					<a class="offset-md-3 bg-dark rounded-circle m-auto" href="#"><img class="mt-1" src="{% static 'core/icon/download-article.svg' %}" alt="" width="70%"></a>
+				</div>
+			</div>
+
+			<div class="row">
+				<div id="text-title" class="col-md-12 m-2">
+				<p>{{article.article_text}}</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- <div id="right-sidebar" class=" col-md-2 bg-dark">
+			<div id="ad-box" class="bg-danger m-2 rounded">Ad</div>
+		</div> -->
+	</div>
+</div>
+<div class="container">
+
+	<div id="comment-hover-space" class="row offset-6 col-md-4 mt-4 text-center rounded-pill">
+		<p class="m-auto">Наведите для просмотра комментариев</p>
+	</div>
+
+	<div id="comment-box" class="mt-4">
+		{% if latest_comment_list %}
+			{% for c in latest_comment_list %}
+				<ul class="list-group">
+					<li id="text-comment" class="list-group-item col-md-12">
+						<strong id="author-comment" class="mt-4">{{c.comment_author}}</strong>
+						<p>{{c.comment_text|truncatechars:"255"}}</p>
+					</li>
+				</ul>
+			{% endfor %}
+		{% endif %}
+	</div>
+</div>
 
 	{% if latest_comment_list %}
 		{% for c in latest_comment_list %}
-			<strong>{{c.comment_author}}:</strong><em>{{c.pub_date}}</em>
-			<p>{{c.comment_text}}</p>
+			<ul class="list-group">
+				<strong class="mt-4">{{c.comment_author}}:</strong><em>{{c.pub_date}}</em>
+				<li class="list-group-item col-4 p-2"><p>{{c.comment_text|truncatechars:"80"}}</p></li>
+			</ul>
 		{% endfor %}
 	{% endif %}
 
+
+	{% if False %}
 	<form action="{% url 'articles:leave_comment' article.id %}" method="POST">
 		
 		{% csrf_token %}
@@ -31,4 +129,5 @@
 		<input type="text" name="comment" placeholder="Comment for {{article.article_title}}" required><br>
 		<input type="submit">
 	</form>
+	{% endif %}
 {% endblock %}

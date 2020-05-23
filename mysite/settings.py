@@ -35,6 +35,9 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'articles.apps.ArticlesConfig',
     'glagna.apps.GlagnaConfig',
+    'core.apps.CoreConfig',
+    'profiles.apps.ProfilesConfig',
+    'news.apps.NewsConfig',
     'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -60,7 +63,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(PROJECT_ROOT, 'temp')
+            os.path.join(PROJECT_ROOT, 'temp'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -125,6 +128,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
+MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
 
+
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')

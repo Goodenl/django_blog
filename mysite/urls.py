@@ -20,5 +20,9 @@ urlpatterns = [
     path('', include("glagna.urls")),
     path('admin/', admin.site.urls),
     path('articles/', include("articles.urls")),
+    path('user/', include('core.urls')),
+    path('profiles/', include('profiles.urls')),
+    path('news/', include('news.urls')),
+
     path('grappelli/', include('grappelli.urls')),
 ]

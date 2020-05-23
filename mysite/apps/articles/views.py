@@ -1,35 +1,89 @@
-from django.shortcuts import render
-from django.http import Http404, HttpResponseRedirect
-from django.urls import reverse
-from django.utils import timezone
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
+from django.http import Http404
 
 from .models import Article
+from .forms import ArticleForm
+from django.db.models import Max
 
-def index(request):	# /articles/ page
-	latest_articles_list = Article.objects.order_by('-pub_date')[:5]
-	return render(request, 'articles/list.html', {'latest_articles_list': latest_articles_list})
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-def detail(request, article_id): # /articles/post_n/ page
+class ArticleListView(ListView):
+	model = Article
+	template_name = "articles/list.html"
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+
+		context['articles_list'] = Article.objects.order_by("-id")
+
+		max_rating = Article.objects.all().aggregate(Max('article_rating'))
+
+		context['max_rating'] = max_rating["article_rating__max"]
+
+		return context
+
+class DetailListView(DetailView):
+	model = Article
+	template_name = "articles/detail.html"
+	context_object_name = "article"
+
+def leave_comment(request, pk):
 	try:
-		a = Article.objects.get( id = article_id )
+		a = Article.objects.get( id = pk )	# get Article by Id
 	except:
 		raise Http404("Статья не найдена!")
 
-	latest_comment_list = a.comment_set.order_by('-id')[:10]
+	a.comment_set.create(comment_author = request.POST['author'], comment_text = request.POST['comment']) # create and add comment
+	return redirect('articles:detail', pk = a.id)
 
-	for c in latest_comment_list:
-		print(c.comment_text)
+class RedirectSuccessMixin():
 
-	return render(request, 'articles/detail.html', {"article": a, 'latest_comment_list': latest_comment_list})
+	def get_success_url(self):
+		return '%s?id=%s' % (self.success_url, self.object.id)
 
-def leave_comment(request, article_id): # /articles/post_n/leave_comment/ page
-	try:
-		a = Article.objects.get( id = article_id )
-	except:
-		raise Http404("Статья не найдена!")
+class ArticleCreateView(CreateView):
+	model = Article
+	template_name = "articles/create_article.html"
+	form_class = ArticleForm
+	success_url = reverse_lazy('articles:articles')
 
-	a.comment_set.create(comment_author = request.POST['author'], comment_text = request.POST['comment'])
-	return HttpResponseRedirect( reverse('articles:detail', args=(a.id,)) )
+class ArticleUpdateView(RedirectSuccessMixin, UpdateView):
+	model = Article
+	template_name = "articles/create_article.html"
+	form_class = ArticleForm
+	success_url = reverse_lazy("articles:articles")
 
-def profiles(request, profile_id):
-	pass
+	def get_context_data(self, **kwargs):
+		kwargs['update'] = True
+		return super().get_context_data(**kwargs)
+
+class ArticleDeleteView(DeleteView):
+	model = Article
+	template_name = "articles/create_article.html"
+	success_url = reverse_lazy("articles:articles")
+
+# def update_article(request, pk):
+
+# 	get_article = Article.objects.get(pk=pk)	# get Article by send url argument(pk)
+# 	success_update = False						# success make form update
+
+# 	if request.method == 'POST':
+# 		form = ArticleForm(request.POST, instance=get_article)
+# 		if form.is_valid():
+# 			form.save()
+# 			success_update = True
+
+# 	if success_update:
+# 		return redirect('articles:detail', pk = get_article.id)
+# 	else:
+
+# 		template = "articles/create_article.html"
+
+# 		context = {
+# 			"get_article": get_article,
+# 			"update": True,
+# 			"form": ArticleForm(instance=get_article),
+# 		}
+
+# 		return render(request, template, context)

@@ -1,26 +1,107 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="shortcut icon" type="image/png" href="{% static 'glagna/favicon.svg'%}"/>
 	<title>{% block title %}My Site{% endblock %}</title>
-	<style>
-		h5, h1{
-			padding: 0;
-			margin: 0;
-		}
-		em{
-			font-size: 12px;
-		}
-	</style>
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet" href="{% static 'glagna/css/global.css' %}">
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js" defer></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" defer></script>
+
+	<script src="{% static 'glagna/js/main.js' %}" defer></script>
+	{% block head %}{% endblock %}
 </head>
 <body>
-	<nav>
-		<a href="/">Home</a>
-		<a href="/admin/">Admin's room</a>
-		<a href="/articles/">New Articles!</a>
-	</nav>
-	<hr>
-	{% block content %}{% endblock %}
+	{% block background %}
+	{% endblock %}
+
+	<div class="container-fluid">
+	<div class="row">
+		<nav class="navbar navbar-expand-sm bg-light navbar-light col-md-12">
+
+				<div id="logo-box" class="navbar-brand col-md-1">
+					<a href="/" class="navbar-brand"><img id="logo-img" src="{% static 'glagna/favicon.svg'%}" alt="Logo" width="40px"></a>
+				</div>
+				
+				<ul class="navbar-nav col-md-3">
+					<li class="nav-item active">
+						<a class="nav-link" href="{% url 'news:main-page' %}">New's</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/articles">Blog</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">FAQ</a>
+					</li>
+			 		<li class="nav-item">
+						<a class="nav-link text-info" href="#">About Us</a>
+					</li>
+				</ul>
+			{% url 'articles:articles' as url_list_articles %}
+			<div id="login-box" class="offset-md-4 col-md-4 row">
+				{% if url_list_articles == request.path %}
+					<div id="create-article" class="offset-md-5 col-md-1 rounded-circle">
+						<a href="{% url 'articles:create_article' %}" class="text-center">
+							<img id="add-article-img" class="rounded mx-auto d-block" src="{% static 'core/icon/plus.svg' %}" alt="Add_Article" width="40px">
+						</a>
+					</div>
+					{% if request.user.is_authenticated %}
+						<div id="login-username" class="col-md-3">
+							<p id="user-name" class="text-center m-auto">{{ user }}</p>
+						</div>
+						<button class="btn bg-danger col-md-3 float-right"><a href="{% url 'core:logout' %}" class="text-dark">Log-Out</a></button>
+					{% else %}
+						<button id="login-btn" class="offset-md-2 btn bg-dark text-light col-md-4">Log in</button>
+					{% endif %}
+				{% else %}
+					<div class="offset-md-5 col-md-1"></div>
+					{% if request.user.is_authenticated %}
+						<div id="login-username" class="col-md-3">
+							<p id="user-name" class="text-center m-auto"><a href="{% url 'profiles:profile-page' %}">{{user}}</a></p>
+						</div>
+						<button class="btn bg-danger col-md-3 float-right"><a href="{% url 'core:logout' %}" class="text-dark">Log-Out</a></button>
+					{% else %}
+						<button id="login-btn" class="offset-md-9 btn bg-dark text-light col-md-4">Log in</button>
+					{% endif %}
+				{% endif %}
+				
+			</div>
+		</nav>
+	</div>
+
+	<div id="login-btn-form" class="row offset-md-4 col-4 align-items-center">
+		<div id="form-box" class=" bg-dark rounded p-2">
+			<div id="img-form" class="row bg-dark rounded-circle mt-3 mx-auto">
+				<img src="{% static 'glagna/favicon.svg'%}" alt="Logo" class="align-self-start" width="80px" height="80px">
+			</div>
+			<form role="form" action="{% url 'glagna:index' %}" method="POST" class="p-2 mt-1">
+				<div class="row ">
+					<div class="form-group mx-auto">
+						<input id="login-form" type="text" name="username" class="form-control" placeholder="Your Login">
+					</div>
+					<div class="form-group mx-auto">
+						<input id="pass-form" type="password" name="password" class="form-control" placeholder="Your Password">
+					</div>
+				</div>
+				<div class="row">
+					{% csrf_token %}
+					<button type="submit" class="btn btn-warning mx-auto">Log In</button>
+
+					<button type="button" class="btn btn-primary mx-auto">Cancel</button>
+				</div>
+
+			</form>
+		</div>
+	</div>
+
+	{% block content %}
+	{% endblock %}
 
 </body>
 </html>
