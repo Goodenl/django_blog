@@ -5,7 +5,7 @@
 
 {% block head %}
 	<link rel="stylesheet" href="{% static 'articles/css/detail.css' %}">
-	<script src="{% static 'articles/js/hover_space.js' %}"></script>
+	<script src="{% static 'articles/js/hover_space.js' %}" defer></script>
 {% endblock %}
 
 {% block content %}
@@ -29,26 +29,12 @@
 	<div id="main-box" class="row">
 		<div id="left-sidebar" class="col-md-2 mr-2 position-absolute">
 			<ul class="list-group">
+				{% for la in last_article %}
 				<li class="list-group-item m-1">
-					<a href="#"><h6>Название статьи</h6></a>
-					<p>Текст очень интересной статьи</p>
+					<a href="{% url 'articles:detail' la.id %}"><h6>{{la.article_title|truncatechars:"13"}}</h6></a>
+					<p>{{la.article_text|truncatechars:"120"}}</p>
 				</li>
-				<li class="list-group-item m-1">
-					<a href="#"><h6>Название статьи</h6></a>
-					<p>Текст очень интересной статьи</p>
-				</li>
-				<li class="list-group-item m-1">
-					<a href="#"><h6>Название статьи</h6></a>
-					<p>Текст очень интересной статьи</p>
-				</li>
-				<li class="list-group-item m-1">
-					<a href="#"><h6>Название статьи</h6></a>
-					<p>Текст очень интересной статьи</p>
-				</li>
-				<li class="list-group-item m-1">
-					<a href="#"><h6>Название статьи</h6></a>
-					<p>Текст очень интересной статьи</p>
-				</li>
+				{% endfor %}
 			</ul>
 		</div>
 
@@ -97,8 +83,8 @@
 	</div>
 
 	<div id="comment-box" class="mt-4">
-		{% if latest_comment_list %}
-			{% for c in latest_comment_list %}
+		{% if comment %}
+			{% for c in comment %}
 				<ul class="list-group">
 					<li id="text-comment" class="list-group-item col-md-12">
 						<strong id="author-comment" class="mt-4">{{c.comment_author}}</strong>
@@ -109,17 +95,6 @@
 		{% endif %}
 	</div>
 </div>
-
-	{% if latest_comment_list %}
-		{% for c in latest_comment_list %}
-			<ul class="list-group">
-				<strong class="mt-4">{{c.comment_author}}:</strong><em>{{c.pub_date}}</em>
-				<li class="list-group-item col-4 p-2"><p>{{c.comment_text|truncatechars:"80"}}</p></li>
-			</ul>
-		{% endfor %}
-	{% endif %}
-
-
 	{% if False %}
 	<form action="{% url 'articles:leave_comment' article.id %}" method="POST">
 		

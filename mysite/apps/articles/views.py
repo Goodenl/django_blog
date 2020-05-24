@@ -28,6 +28,14 @@ class DetailListView(DetailView):
 	template_name = "articles/detail.html"
 	context_object_name = "article"
 
+	def get_context_data(self, *args, **kwargs):
+		context = super().get_context_data(**kwargs)
+
+		context['last_article'] = Article.objects.order_by("-id")[:5]
+		context['comment'] = Article.objects.get( id = kwargs['object'].id).comment_set.order_by("-id")
+
+		return context
+
 def leave_comment(request, pk):
 	try:
 		a = Article.objects.get( id = pk )	# get Article by Id

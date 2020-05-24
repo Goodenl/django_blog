@@ -4,5 +4,5 @@ from . import views
 
 app_name = 'glagna'
 urlpatterns = [
-	path("", views.LoginUserView.as_view(), name = 'index'),
+	path("", views.GlagnaIndexView.as_view(), name = 'index'),
 ]

@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&family=Raleway&display=swap');
+
+body, html{
+	height: 20vh;
+	background-color: #eee;
+	font-family: "Lato";
+	font-weight: 300;
+	font-size: 16px;
+	color: #555;
+
+	-webkit-font-smoothing: antialiased;
+	-moz-font-smoothing: antialiased;
+	-ms-font-smoothing: antialiased;
+	-o-font-smoothing: antialiased;
+	font-smoothing: antialiased;
+
+}
+
+h1, h2, h3, h4, h5, h6{
+	font-family: "Raleway";
+	font-weight: 300;
+	color: #333;
+}
+
+p{
+	line-height: 28px;
+}
+
+a{
+	color: #f86c37;
+}
+
+nav{
+	z-index: 10;
+}
+
+a:hover, a:focus{
+	color: #7b7b7b;
+	text-decoration: none;
+	outline: 0;
+}
+
+@keyframes logo-signal{
+	from{
+		background-color: #343a40;
+	}
+	50%{
+		background-color: #81D4FA;
+	}
+	to{
+		background-color: #343a40;
+	}
+}
+
+#logo-box{
+	max-width: 60px;
+	height: 32px;
+	border-radius: 15px;
+	background-color: #343a40;
+	transition: 0.4s ease-out;
+	animation: logo-signal 0.5s ease-in-out;
+	animation-iteration-count: 2;
+}
+
+#logo-box:hover{
+	background-color: #f8f9fa;
+}
+
+#logo-img{
+	position: relative;
+	top: -12px;
+	left: -5px;
+}
+
+#user-name{
+	width: 80px;
+	overflow-y: hidden;
+}
+
+#login-btn-form{
+	position: absolute;
+	margin-top: 10%;
+	transition: 0.4s ease-out;
+	z-index: 5;
+	display: none;
+}
+
+#form-box{
+	min-height: 50vh;
+}
+
+#img-form{
+	max-height: 80px;
+	max-width: 80px;
+}
+
+#foot{
+	margin-top: 30px; 
+	min-height: 10vh;
+	position: absolute;
+	width: 1200vh;
+	right: 0;
+}

@@ -1,0 +1,61 @@
+#create-article{
+	min-height: 40px;
+}
+
+#list-box, #list-box *{
+	transition: 0.4s ease-out;
+}
+
+#list-item{
+	border-radius: 25px;
+	box-shadow: 0 3px 3px 1px #9E9E9E;
+}
+
+#user-img{
+	width: 80px;
+	height: 80px;
+}
+
+
+#article-box{
+	background: #009688;
+	overflow-y: hidden;
+}
+
+#article-header-text{
+	color: #E0F7FA;
+}
+
+#rating-box{
+	height: inherit;
+}
+
+#rating-box>div{
+	background-color: rgba(139,195,74 ,1);
+	height: 100%;
+	width: 50px;
+}
+
+#interact-box>*{
+	width: 40px;
+	height: 40px;
+}
+
+#article-btn{
+	display: block;
+	
+	width: 100%;
+	height: 100%;
+}
+
+#article-btn>img{
+	margin-top: 5px;
+}
+
+#download-article-btn{
+	margin-top: 15px;
+}
+
+#download-article-btn img{
+	margin-top: 8px;
+}

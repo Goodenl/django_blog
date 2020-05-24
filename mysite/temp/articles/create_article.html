@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<a href="{% url 'articles:articles' %}">Вернуться назад</a>
+{% if success%}
+Успешно создали статью!
+{% endif%}
+
+	{% if update %}
+		<form id="update-form" action="" method="POST">
+			{{form}}
+			{% csrf_token %}
+			<input type="submit" value="Закончить Редактирование">
+		</form>
+	{% else %}
+		<form id="create-form" action="" method="POST">
+			{{form}}
+			{% csrf_token %}
+			<input type="submit" value="Подтвердить">
+		</form>
+	{% endif%}
+
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+	{% block title %}Glagna{% endblock %}
+
+	{% block head %}
+	<link rel="stylesheet" href="{% static 'glagna/css/style.css' %}">
+
+	<script src="{% static 'glagna/js/paralax-main.js' %}" defer></script>
+	{% endblock %}
+</head>
+<body>
+{% block background  %}
+<div id="main-background" class="container-fluid"></div>
+{% endblock %}
+{% block content %}
+	<div id="first-half">
+		<div id="main-page" class="row d-flex align-items-center">
+
+			<content id="content-preview" class="offset-md-1 float-left col-md-7 bg-light rounded{% if request.user.is_authenticated %} col-md-10{% endif %}">
+				
+				<div class="row justify-content-center">
+					<div class="col-md-6 bg-dark ">
+						<p>gg</p>
+					</div>
+				</div>
+
+			</content>
+
+			{% if not request.user.is_authenticated %}
+
+			<div id="form-box" class="offset-md-1 offset-sm-0 bg-light col-md-2 col-sm-1 align-items-center rounded">
+				<div id="img-form" class="row bg-dark rounded-circle mt-3 mx-auto">
+					<img src="{% static 'glagna/favicon.svg'%}" alt="Logo" class="align-self-start" width="80px" height="80px">
+				</div>
+				<form id="reg-form" role="form" action="{% url 'core:signup' %}" method="POST" class="p-2 mt-1">
+					{{form}}
+					<div class="checkbox">
+						<p class="text-alert">
+							<input type="checkbox">GG
+						</p>
+					</div>
+					<div class="row">
+						{% csrf_token %}
+						<button type="submit" class="btn btn-warning mx-auto">Log In</button>
+
+						<button type="submit" class="btn btn-primary mx-auto">Register</button>
+					</div>
+
+				</form>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+</div>
+
+<div id="second-half" class="container-fluid">
+		<div id="main-slider">
+			{% for la in last_article %}
+				<div id="item-slider">
+					<a href="{% url 'articles:detail' la.id %}"><h1>{{la.article_title|truncatechars:"13"}}</h1></a>
+					<p>{{la.article_text|truncatechars:"420"}}</p>
+				</div>
+			{% endfor %}
+		</div>
+		<footer id="foot" class="bg-dark col-md-12"><p>gg</p></footer>
+</div>
+{% endblock %}
+</body>
+</html>
