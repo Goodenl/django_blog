@@ -1,24 +1,43 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block head %}
+	<link rel="stylesheet" href="{% static 'articles/css/create-article.css' %}">
+
+	<script src="{% static 'articles/js/create_article.js' %}"></script>
+{% endblock %}
+
 {% block content %}
 <a href="{% url 'articles:articles' %}">Вернуться назад</a>
 {% if success%}
 Успешно создали статью!
 {% endif%}
 
-	{% if update %}
-		<form id="update-form" action="" method="POST">
-			{{form}}
-			{% csrf_token %}
-			<input type="submit" value="Закончить Редактирование">
-		</form>
-	{% else %}
-		<form id="create-form" action="" method="POST">
-			{{form}}
-			{% csrf_token %}
-			<input type="submit" value="Подтвердить">
-		</form>
-	{% endif%}
+<div class="container-fluid mt-5">
+	<form role="form" action="" method="POST" class="p-2 mt-1">
+		<div id="create-title-article" class="offset-md-5 col-md-3 row form-group mx-auto">
+			{{form.article_title}}
+		</div>
 
+		<div class="row form-group col-md-12">
+			<div id="return-btn" class="offset-md-1 col-md-1 row text-center">
+				<a class="bg-dark rounded-circle m-auto" href="#"><img class="mt-2 mr-1" src="{% 'icon/back-white-rounded.svg' %}" alt="" width="60%"></a>
+			</div>
+			
+			<input id="create-tags-article" class="form-control offset-md-1 col-md-7" type="text" placeholder="Article Tags">
+			
+			<label id="draft-btn" class="offset-md-1 col-md-1 bg-dark row text-center rounded-circle" for="draft">
+				<input id="rough_copy" name="draft" type="checkbox">
+				<img id="uncheck" src="../icon/no_public.svg" alt="">
+				<img id="check" src="../icon/no_public_white.svg" alt="">
+			</label>
+		</div>
+
+		<div id="create-text-article" class="row form-group mx-auto">
+			{{form.article_text}}
+		</div>
+		{% csrf_token %}
+		<button class="form-control offset-md-5 col-md-3 mx-auto" type="submit">Подтвердить</button>
+	</form>
+</div>
 {% endblock %}

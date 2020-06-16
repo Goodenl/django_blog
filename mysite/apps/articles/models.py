@@ -8,8 +8,11 @@ class Article(models.Model):
 	article_title = models.CharField('название статьи', max_length = 100)
 	article_text = models.TextField('текст статьи')
 	article_rating = models.IntegerField('рейтинг статьи', default=0)
-	pub_date = models.DateTimeField('дата публикации статьи', default=timezone.now)
+	article_tags = models.BooleanField(default=True, null=True, blank=True)
 
+	no_public = models.BooleanField(default=True)
+
+	pub_date = models.DateTimeField('дата публикации статьи', default=timezone.now)
 
 
 	def __str__(self):

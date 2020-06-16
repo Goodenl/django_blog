@@ -1,0 +1,46 @@
+#return-btn{
+	transition: 0.3s ease-out;
+}
+
+#return-btn>a{
+	width: 40px;
+	height: 40px;
+}
+
+#draft-btn{
+	max-width: 40px;
+	max-height: 40px;
+	min-width: 40px;
+	min-height: 40px;
+
+	transition: 0.3s ease-out;
+}
+
+#draft-btn>input[type="checkbox"]{
+	position: relative;
+	left: -15px;
+	min-width: 40px;
+	min-height: 40px;
+	opacity: 0;
+	transition: 0.4s ease-out;
+	z-index: 1;
+}
+
+#draft-btn>img{
+	top: -25px;
+	position: relative;
+
+	transform: scale(3.5);
+	z-index: 0;
+}
+
+#draft-btn>img#check{
+	position: relative;
+	top: -36px;
+	opacity: 0;
+	transition: 0.4s ease-out;
+}
+
+#article_text_create{
+	resize: none;
+}

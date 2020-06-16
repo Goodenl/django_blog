@@ -46,14 +46,14 @@
 			{% url 'articles:articles' as url_list_articles %}
 			<div id="login-box" class="offset-md-4 col-md-4 row">
 				{% if url_list_articles == request.path %}
-					<div id="create-article" class="offset-md-5 col-md-1 rounded-circle">
-						<a href="{% url 'articles:create_article' %}" class="text-center">
+					<div id="create-article" class="offset-md-4 col-md-2 rounded-pill">
+						<a id="create-article-link" href="{% url 'articles:create_article' %}" class="text-center" title="Add Article">
 							<img id="add-article-img" class="rounded mx-auto d-block" src="{% static 'core/icon/plus.svg' %}" alt="Add_Article" width="40px">
 						</a>
 					</div>
 					{% if request.user.is_authenticated %}
 						<div id="login-username" class="col-md-3">
-							<p id="user-name" class="text-center m-auto">{{ user }}</p>
+							<p id="user-name" class="text-center m-auto"><a href="{% url 'profiles:profile-page' %}">{{ user }}</a></p>
 						</div>
 						<button class="btn bg-danger col-md-3 float-right"><a href="{% url 'core:logout' %}" class="text-dark">Log-Out</a></button>
 					{% else %}
